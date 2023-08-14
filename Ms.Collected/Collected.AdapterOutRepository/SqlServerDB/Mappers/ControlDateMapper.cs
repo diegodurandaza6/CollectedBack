@@ -12,7 +12,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Mappers
                 Id = controlDateEntity.Id,
                 fecha = controlDateEntity.fecha,
                 ultima_ejecucion = controlDateEntity.ultima_ejecucion,
-                
+                en_ejecucion = controlDateEntity.en_ejecucion
             };
             return collectedDto ?? null;
         }
@@ -24,6 +24,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Mappers
                 Id = controlDateDto.Id,
                 fecha = controlDateDto.fecha,
                 ultima_ejecucion = controlDateDto.ultima_ejecucion,
+                en_ejecucion = controlDateDto.en_ejecucion
             };
         }
     }

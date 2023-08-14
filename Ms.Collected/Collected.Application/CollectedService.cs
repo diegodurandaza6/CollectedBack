@@ -39,20 +39,26 @@ namespace Collected.Application
         public async Task CreateCollected()
         {
             ControlDateDto objControl = _collectedRepository.GetControlDate();
-            while(objControl.fecha.Date <= DateTime.Now.Date)
+            if (!objControl.en_ejecucion)
             {
-                string FechaControl = objControl.fecha.ToString("yyyy-MM-dd");
-                List<ConteoVehiculosDto> ConteoLista = await _f2xService.GetConteoVehiculos(FechaControl);
-                List<RecaudoVehiculosDto> RecaudoLista = await _f2xService.GetRecaudoVehiculos(FechaControl);
-
-                List<CollectionDto> data = CollectedUseCase.GetDataToSaveOnDB(ConteoLista, RecaudoLista, FechaControl);
-                objControl.fecha = objControl.fecha.AddDays(1);
-                objControl.ultima_ejecucion = DateTime.Now;
-                if (data.Any())
+                while(objControl.fecha.Date <= DateTime.Now.Date)
                 {
-                    _collectedRepository.CreateCollected(data);
-                    _collectedRepository.UpdateControlDate(objControl);
+                    string FechaControl = objControl.fecha.ToString("yyyy-MM-dd");
+                    List<ConteoVehiculosDto> ConteoLista = await _f2xService.GetConteoVehiculos(FechaControl);
+                    List<RecaudoVehiculosDto> RecaudoLista = await _f2xService.GetRecaudoVehiculos(FechaControl);
+
+                    List<CollectionDto> data = CollectedUseCase.GetDataToSaveOnDB(ConteoLista, RecaudoLista, FechaControl);
+                    objControl.fecha = objControl.fecha.AddDays(1);
+                    objControl.ultima_ejecucion = DateTime.Now;
+                    objControl.en_ejecucion = true;
+                    if (data.Any())
+                    {
+                        _collectedRepository.CreateCollected(data);
+                        _collectedRepository.UpdateControlDate(objControl);
+                    }
                 }
+                objControl.en_ejecucion = false;
+                _collectedRepository.UpdateControlDate(objControl);
             }
         }
 

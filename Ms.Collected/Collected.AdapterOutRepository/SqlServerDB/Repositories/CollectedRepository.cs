@@ -100,7 +100,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Repositories
                     controlDate = new()
                     {
                         fecha = DateTime.Parse(_configuration.GetSection("ApiF2X:FechaDefault").Value),
-                        ultima_ejecucion = DateTime.UtcNow.AddHours(-5)
+                        ultima_ejecucion = DateTime.UtcNow.AddHours(-5),
                     };
                 }
                 return controlDate.ToDomain();
@@ -121,6 +121,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Repositories
                 {
                     existingItem.fecha = controlDateDto.fecha;
                     existingItem.ultima_ejecucion = controlDateDto.ultima_ejecucion;
+                    existingItem.en_ejecucion = controlDateDto.en_ejecucion;
 
                     _dbContext.Entry(existingItem).State = EntityState.Modified;
                 }
