@@ -1,0 +1,66 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
+
+namespace Collected.AdapterInHttp.Extensions
+{
+    public static class SwaggerExtension
+    {
+        public static void AddSwaggerGenCustomized(this IServiceCollection services, string appName)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerDoc(description.GroupName, new OpenApiInfo()
+                    {
+                        Title = $"{appName} {description.ApiVersion}",
+                        Version = description.ApiVersion.ToString(),
+                        Description = description.IsDeprecated ? $"{appName} {description.ApiVersion} is marked as deprecated. Please consider using a newer version." : string.Empty
+                    });
+                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "Here enter JWT Token with bearer format like Bearer[space]token"
+                    });
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                    });
+                }
+                options.DescribeAllParametersInCamelCase();
+            });
+        }
+
+        public static void AllowSwaggerToListApiVersions(this WebApplication app, string appName)
+        {
+            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"{description.ApiVersion} ({appName})");
+                }
+                options.DocExpansion(DocExpansion.List);
+            });
+        }
+    }
+}

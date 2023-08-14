@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Collected.AdapterInHttp\Collected.AdapterInHttp.csproj" />
+    <ProjectReference Include="..\Collected.AdapterOutF2XService\Collected.AdapterOutF2XService.csproj" />
+    <ProjectReference Include="..\Collected.AdapterOutReport\Collected.AdapterOutReport.csproj" />
+    <ProjectReference Include="..\Collected.AdapterOutRepository\Collected.AdapterOutRepository.csproj" />
+    <ProjectReference Include="..\Collected.Application\Collected.Application.csproj" />
+  </ItemGroup>
+
+</Project>
