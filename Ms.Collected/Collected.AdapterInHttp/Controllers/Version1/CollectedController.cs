@@ -11,7 +11,7 @@ namespace Collected.AdapterInHttp.Controllers.Version1
     [ApiController]
     [ApiVersion("1.0", Deprecated = false)]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CollectedController : ControllerBase
     {
         private readonly ICollectedService _collectedService;

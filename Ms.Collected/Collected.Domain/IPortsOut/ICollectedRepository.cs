@@ -11,5 +11,7 @@ namespace Collected.Domain.IPortsOut
         void CreateCollected(List<CollectionDto> collected);
         ControlDateDto GetControlDate();
         void UpdateControlDate(ControlDateDto controlDateDto);
+        JwtAuthDto? GetToken();
+        void ManageToken(JwtAuthDto jwtAuthDto);
     }
 }

@@ -23,7 +23,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Repositories
         {
             try
             {
-                _dbContext.Database.SetCommandTimeout(6000);
+                _dbContext.Database.SetCommandTimeout(60000);
                 collected.ForEach(item =>
                 {
                     var existingItem = _dbContext.Recaudos
@@ -128,6 +128,51 @@ namespace Collected.AdapterOutRepository.SqlServerDB.Repositories
                 else
                 {
                     _dbContext.ControlDate.Add(controlDateDto.ToEntity());
+                }
+
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JwtAuthDto? GetToken()
+        {
+            try
+            {
+                JwtAuth? jwtAuth = _dbContext.JwtAuth.FirstOrDefault();
+                if(jwtAuth != null)
+                {
+                    return jwtAuth.ToDomain();
+                }else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void ManageToken(JwtAuthDto jwtAuthDto)
+        {
+            try
+            {
+                var existingItem = _dbContext.JwtAuth.FirstOrDefault();
+
+                if (existingItem != null)
+                {
+                    existingItem.token = jwtAuthDto.token;
+                    existingItem.expiration = jwtAuthDto.expiration;
+
+                    _dbContext.Entry(existingItem).State = EntityState.Modified;
+                }
+                else
+                {
+                    _dbContext.JwtAuth.Add(jwtAuthDto.ToEntity());
                 }
 
                 _dbContext.SaveChanges();

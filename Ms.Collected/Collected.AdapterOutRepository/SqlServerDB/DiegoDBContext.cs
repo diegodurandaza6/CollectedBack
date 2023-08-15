@@ -9,6 +9,7 @@ namespace Collected.AdapterOutRepository.SqlServerDB
 
         public virtual DbSet<Entities.Recaudos> Recaudos { get; set; }
         public virtual DbSet<Entities.ControlDate> ControlDate { get; set; }
+        public virtual DbSet<Entities.JwtAuth> JwtAuth { get; set; }
 
     }
 }

@@ -23,6 +23,73 @@ OS: win32 x64
 
 Pasos para la correcta descarga de código y ejecución de la aplicación back
 
+Pre-requisito:
+Ejecutar el siguiente script en base de datos:
+
+USE [DiegoDuran]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'diego')
+BEGIN
+    EXEC('CREATE SCHEMA [diego]')
+    PRINT 'Esquema [diego] creado.'
+END
+ELSE
+BEGIN
+    PRINT 'El esquema [diego] ya existe.'
+END
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[diego].[JwtAuth]'))
+BEGIN
+	CREATE TABLE [diego].[JwtAuth](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[token] [text] NULL,
+		[expiration] [datetime] NULL
+	) ON [PRIMARY]
+	
+	PRINT 'Tabla JwtAuth creada correctamente'
+END
+ELSE
+BEGIN
+	print 'Tabla JwtAuth ya existe'
+END
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[diego].[control_consolidado_recaudos]'))
+BEGIN
+	CREATE TABLE [diego].[control_consolidado_recaudos](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[fecha] [date] NULL,
+		[ultima_ejecucion] [datetime] NULL,
+		[en_ejecucion] [bit] NULL
+	) ON [PRIMARY]
+
+	PRINT 'Tabla control_consolidado_recaudos creada correctamente'
+END
+ELSE
+BEGIN
+	print 'Tabla control_consolidado_recaudos ya existe'
+END
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[diego].[recaudos]'))
+BEGIN
+	CREATE TABLE [diego].[recaudos](
+		[id] [int] IDENTITY(1,1) NOT NULL,
+		[estacion] [varchar](10) NULL,
+		[sentido] [varchar](15) NULL,
+		[hora] [tinyint] NULL,
+		[categoria] [varchar](5) NULL,
+		[cantidad] [int] NULL,
+		[valorTabulado] [decimal](12, 2) NULL,
+		[fecha] [date] NULL
+	) ON [PRIMARY]
+
+	PRINT 'Tabla recaudos creada correctamente'
+END
+ELSE
+BEGIN
+	PRINT 'Tabla recaudos ya existe'
+END
+
 1. Abrir la terminal y ubicarse en la carpeta que se desee descargar el proyecto.
 2. Desde la terminal ejecutar el siguiente comando: git clone https://github.com/diegodurandaza6/CollectedBack.git
 3. Reubicarse a la raiz del proyecto (folder clonado desde GitHub)
