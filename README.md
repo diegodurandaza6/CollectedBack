@@ -26,6 +26,7 @@ Pasos para la correcta descarga de código y ejecución de la aplicación back
 Pre-requisito:
 Ejecutar el siguiente script en base de datos:
 
+```sql
 USE [DiegoDuran]
 GO
 
@@ -89,6 +90,7 @@ ELSE
 BEGIN
 	PRINT 'Tabla recaudos ya existe'
 END
+```
 
 1. Abrir la terminal y ubicarse en la carpeta que se desee descargar el proyecto.
 2. Desde la terminal ejecutar el siguiente comando: git clone https://github.com/diegodurandaza6/CollectedBack.git
