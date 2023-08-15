@@ -5,10 +5,12 @@ Recomendaciones generales:
 
 # Usuario para obtención del token del MS de seguridad
 - Usuario admin
+```json
 {
   "userName": "dduran",
   "password": "Admin123*"
 }
+```
 
 Para la visualización del reporte desde visual satudio 2022 se debe instalar la siguiente herramienta:
 https://marketplace.visualstudio.com/items?itemName=ProBITools.MicrosoftRdlcReportDesignerforVisualStudio2022
